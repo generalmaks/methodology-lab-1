@@ -17,6 +17,10 @@ class Program
         {
             SolveQuadraticInteractive();
         }
+        else
+        {
+            Console.WriteLine("Incorrect number of arguments");
+        }
     }
 
     private static (double?, double?) SolveQuadratic(double a, double b, double c)
