@@ -1,4 +1,6 @@
-﻿(double?, double?) SolveQuadratic(double a, double b, double c)
+﻿using System.Globalization;
+
+(double?, double?) SolveQuadratic(double a, double b, double c)
 {
     try
     {
@@ -23,5 +25,45 @@
     }
 }
 
-var quadraticRoots = SolveQuadratic(4, -5, -12);
-Console.WriteLine(quadraticRoots);
+void SolveQuadraticInteractive()
+{
+    string? input;
+    Console.Write("a = ");
+
+    input = Console.ReadLine();
+    if (!double.TryParse(input, out double a))
+    { Console.Write($"Error. Expected a valid real number, got \'{input}\' instead"); }
+    Console.Write("b = ");
+
+    input = Console.ReadLine();
+    if (!double.TryParse(input, out double b))
+    { Console.Write($"Error. Expected a valid real number, got \'{input}\' instead"); }
+    Console.Write("c = ");
+
+    input = Console.ReadLine();
+    if (!double.TryParse(input, out double c))
+    { Console.Write($"Error. Expected a valid real number, got \'{input}\' instead"); }
+
+    (double? root1, double? root2) = SolveQuadratic(a, b, c);
+
+    int rootsAmount;
+
+    if(root1 == null)
+        rootsAmount = 0;
+    else if(root1 != null && root2 == null)
+        rootsAmount = 1;
+    else
+        rootsAmount = 2;
+
+    Console.WriteLine($"Equation is: ({a}) x^2 + ({b}) x + ({c}) = 0");
+    Console.WriteLine($"There are {rootsAmount} roots");
+    if (rootsAmount == 1)
+        Console.WriteLine($"x1 = {root1}");
+    else if(rootsAmount == 2){
+        Console.WriteLine($"x1 = {root1}\nx2 = {root2}");
+    }
+}
+
+SolveQuadraticInteractive();
+
+Console.Beep();
