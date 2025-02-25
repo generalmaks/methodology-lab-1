@@ -1,73 +1,74 @@
-﻿using System.Globalization;
-
-(double?, double?) SolveQuadratic(double a, double b, double c)
+﻿using System;
+namespace lab1;
+class Program
 {
-    try
+    static void Main(string[] args)
     {
-        (double?, double?) answer = (null, null);
-        double D = b * b - 4 * a * c;
-        if (D == 0)
-        {
-            answer = (-b / (2 * a), null);
-        }
-        if (D > 0)
-        {
-            var root1 = (-b + Math.Sqrt(D)) / (2 * a);
-            var root2 = (-b - Math.Sqrt(D)) / (2 * a);
-            answer = (root1, root2);
-        }
-        return answer;
+        SolveQuadraticInteractive();
     }
-    catch (Exception e)
+
+    private static (double?, double?) SolveQuadratic(double a, double b, double c)
     {
-        Console.WriteLine("Error occured while trying to solve quadratic equation: " + e);
-        throw;
+        try
+        {
+            (double?, double?) answer = (null, null);
+            double D = b * b - 4 * a * c;
+            if (D == 0)
+            {
+                answer = (-b / (2 * a), null);
+            }
+            else if (D > 0)
+            {
+                var root1 = (-b + Math.Sqrt(D)) / (2 * a);
+                var root2 = (-b - Math.Sqrt(D)) / (2 * a);
+                answer = (root1, root2);
+            }
+            return answer;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Error occurred while trying to solve quadratic equation: " + e);
+            throw;
+        }
     }
-}
 
-double ReadDouble(string variable)
-{
-    while (true)
+    static double ReadDouble(string variable)
     {
-        string? input;
+        while (true)
+        {
+            string? input;
+            Console.Write($"{variable} = ");
+            input = Console.ReadLine();
+            if (!double.TryParse(input, out double value))
+            { 
+                Console.WriteLine($"Error. Expected a valid real number, got '{input}' instead"); 
+            }
+            else
+                return value;
+        }
+    }
 
-        Console.Write($"{variable} = ");
-        input = Console.ReadLine();
-        if (!double.TryParse(input, out double value))
-        { Console.WriteLine($"Error. Expected a valid real number, got \'{input}\' instead"); }
+    static void SolveQuadraticInteractive()
+    {
+        double a, b, c;
+        a = ReadDouble("a");
+        b = ReadDouble("b");
+        c = ReadDouble("c");
+        (double? root1, double? root2) = SolveQuadratic(a, b, c);
+        int rootsAmount;
+        if (root1 == null)
+            rootsAmount = 0;
+        else if (root1 != null && root2 == null)
+            rootsAmount = 1;
         else
-            return value;
+            rootsAmount = 2;
+        Console.WriteLine($"Equation is: ({a}) x^2 + ({b}) x + ({c}) = 0");
+        Console.WriteLine($"There are {rootsAmount} roots");
+        if (rootsAmount == 1)
+            Console.WriteLine($"x1 = {root1}");
+        else if (rootsAmount == 2)
+        {
+            Console.WriteLine($"x1 = {root1}\nx2 = {root2}");
+        }
     }
 }
-
-void SolveQuadraticInteractive()
-{
-    double a, b, c;
-    a = ReadDouble("a");
-    b = ReadDouble("b");
-    c = ReadDouble("c");
-
-    (double? root1, double? root2) = SolveQuadratic(a, b, c);
-
-    int rootsAmount;
-
-    if (root1 == null)
-        rootsAmount = 0;
-    else if (root1 != null && root2 == null)
-        rootsAmount = 1;
-    else
-        rootsAmount = 2;
-
-    Console.WriteLine($"Equation is: ({a}) x^2 + ({b}) x + ({c}) = 0");
-    Console.WriteLine($"There are {rootsAmount} roots");
-    if (rootsAmount == 1)
-        Console.WriteLine($"x1 = {root1}");
-    else if (rootsAmount == 2)
-    {
-        Console.WriteLine($"x1 = {root1}\nx2 = {root2}");
-    }
-}
-
-SolveQuadraticInteractive();
-
-Console.Beep();
