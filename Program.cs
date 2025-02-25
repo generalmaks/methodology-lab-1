@@ -1,17 +1,21 @@
-﻿(double?, double?) SolveQuadratic(double a, double b, double c)
+﻿using System.Numerics;
+
+(T?, T?) SolveQuadratic<T>(T a, T b, T c) where T: INumber<T>, IRootFunctions<T>
 {
     try
     {
-        (double?, double?) answer = (null, null);
-        double D = b * b - 4 * a * c;
-        if (D == 0)
+        (T?, T?) answer = (default, default);
+        T two = T.CreateChecked(2);
+        T four = T.CreateChecked(4);
+        T D = b * b - four * a * c;
+        if (D == T.Zero)
         {
-            answer = (-b / (2 * a), null);
+            answer = (-b / (two * a), default);
         }
-        if (D > 0)
+        if (D > T.Zero)
         {
-            var root1 = (-b + Math.Sqrt(D)) / (2 * a);
-            var root2 = (-b - Math.Sqrt(D)) / (2 * a);
+            var root1 = (-b + T.Sqrt(D)) / (two * a);
+            var root2 = (-b - T.Sqrt(D)) / (two * a);
             answer = (root1, root2);
         }
         return answer;
@@ -23,5 +27,5 @@
     }
 }
 
-var quadraticRoots = SolveQuadratic(4, -5, -12);
+var quadraticRoots = SolveQuadratic(3.0, -5.0, 2.0);
 Console.WriteLine(quadraticRoots);
