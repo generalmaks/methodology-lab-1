@@ -1,16 +1,51 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 namespace lab1;
 class Program
 {
     static void Main(string[] args)
     {
-        if (args.Length == 3)
+        if (args.Length == 1)
         {
-            if (double.TryParse(args[0], out double a) &&
-                double.TryParse(args[1], out double b) &&
-                double.TryParse(args[2], out double c))
+            var filePath = args[0];
+            if (!File.Exists(filePath))
             {
-                SolveQuadratic(a, b, c);
+                Console.WriteLine("Error: File path was not found");
+                return;
+            }
+            else
+            {
+                try
+                {
+                    string fileContent = File.ReadAllText(filePath);
+                    var stringArgs = fileContent.Split(" ");
+                    double[] doubleArgs = new double[3];
+                    if (stringArgs.Length != 3)
+                    {
+                        Console.WriteLine("Error: Incorrect number of arguments");
+                        return;
+                    }
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        doubleArgs[i] = Convert.ToDouble(stringArgs[i]);
+                    }
+
+                    double a, b, c;
+                    a = doubleArgs[0];
+                    b = doubleArgs[1];
+                    c = doubleArgs[2];
+                    SolveQuadratic(a, b, c);
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Error: Wrong arguments given");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error reading the file: {ex.Message}");
+                }
             }
         }
         else if (args.Length == 0)
